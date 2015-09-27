@@ -15,7 +15,10 @@
 #import "SCLTextView.h"
 
 typedef NSAttributedString* (^SCLAttributedFormatBlock)(NSString *value);
+typedef NSDictionary*(^SCLAlertGeneralParameters)(void);
 typedef void (^DismissBlock)(void);
+
+static NSString *const kSCLAlertAnimationDurationKey = @"animationDuration";
 
 @interface SCLAlertView : UIViewController
 
@@ -112,6 +115,13 @@ typedef NS_ENUM(NSInteger, SCLAlertViewBackground)
  * Holds the attributed string.
  */
 @property (nonatomic, copy) SCLAttributedFormatBlock attributedFormatBlock;
+
+/** Set genera parameters block
+ *
+ * Holds the general parameters
+ * Support keys : animationDuration
+ */
+@property (nonatomic, copy) SCLAlertGeneralParameters generalParametersBlock;
 
 /** Set Complete button format block.
  *

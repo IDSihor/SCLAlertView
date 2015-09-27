@@ -66,6 +66,7 @@ CGFloat kCircleHeightBackground;
 CGFloat kActivityIndicatorHeight;
 CGFloat kTitleTop;
 CGFloat kTitleHeight;
+CGFloat kDefaultAnimationDuration;
 
 // Timer
 NSTimer *durationTimer;
@@ -86,6 +87,10 @@ SCLTimerDisplay *buttonTimer;
     if (self)
     {
         // Default values
+        kDefaultAnimationDuration = 0.5f;
+        self.generalParametersBlock = ^NSDictionary*() {
+            return @{kSCLAlertAnimationDurationKey : @(kDefaultAnimationDuration)};
+        };
         kCircleTopPosition = -12.0f;
         kCircleBackgroundTopPosition = -15.0f;
         kCircleHeight = 56.0f;
@@ -519,7 +524,7 @@ SCLTimerDisplay *buttonTimer;
 {
     if(_keyboardIsVisible) return;
     
-    [UIView animateWithDuration:0.2f animations:^{
+    [UIView animateWithDuration:((NSNumber*)_generalParametersBlock()[kSCLAlertAnimationDurationKey]).floatValue animations:^{
         CGRect f = self.view.frame;
         f.origin.y -= KEYBOARD_HEIGHT + PREDICTION_BAR_HEIGHT;
         self.view.frame = f;
@@ -531,7 +536,7 @@ SCLTimerDisplay *buttonTimer;
 {
     if(!_keyboardIsVisible) return;
     
-    [UIView animateWithDuration:0.2f animations:^{
+    [UIView animateWithDuration:((NSNumber*)_generalParametersBlock()[kSCLAlertAnimationDurationKey]).floatValue animations:^{
         CGRect f = self.view.frame;
         f.origin.y += KEYBOARD_HEIGHT + PREDICTION_BAR_HEIGHT;
         self.view.frame = f;
@@ -1196,7 +1201,8 @@ SCLTimerDisplay *buttonTimer;
 
 - (void)fadeOut
 {
-    [UIView animateWithDuration:0.3f animations:^{
+    
+    [UIView animateWithDuration:((NSNumber*)_generalParametersBlock()[kSCLAlertAnimationDurationKey]).floatValue animations:^{
         self.backgroundView.alpha = 0.0f;
         self.view.alpha = 0.0f;
     } completion:^(BOOL completed) {
@@ -1217,7 +1223,7 @@ SCLTimerDisplay *buttonTimer;
 
 - (void)slideOutToBottom
 {
-    [UIView animateWithDuration:0.3f animations:^{
+    [UIView animateWithDuration:((NSNumber*)_generalParametersBlock()[kSCLAlertAnimationDurationKey]).floatValue animations:^{
         CGRect frame = self.view.frame;
         frame.origin.y += self.backgroundView.frame.size.height;
         self.view.frame = frame;
@@ -1228,7 +1234,7 @@ SCLTimerDisplay *buttonTimer;
 
 - (void)slideOutToTop
 {
-    [UIView animateWithDuration:0.3f animations:^{
+    [UIView animateWithDuration:((NSNumber*)_generalParametersBlock()[kSCLAlertAnimationDurationKey]).floatValue animations:^{
         CGRect frame = self.view.frame;
         frame.origin.y -= self.backgroundView.frame.size.height;
         self.view.frame = frame;
@@ -1239,7 +1245,7 @@ SCLTimerDisplay *buttonTimer;
 
 - (void)slideOutToLeft
 {
-    [UIView animateWithDuration:0.3f animations:^{
+    [UIView animateWithDuration:((NSNumber*)_generalParametersBlock()[kSCLAlertAnimationDurationKey]).floatValue animations:^{
         CGRect frame = self.view.frame;
         frame.origin.x -= self.backgroundView.frame.size.width;
         self.view.frame = frame;
@@ -1250,7 +1256,7 @@ SCLTimerDisplay *buttonTimer;
 
 - (void)slideOutToRight
 {
-    [UIView animateWithDuration:0.3f animations:^{
+    [UIView animateWithDuration:((NSNumber*)_generalParametersBlock()[kSCLAlertAnimationDurationKey]).floatValue animations:^{
         CGRect frame = self.view.frame;
         frame.origin.x += self.backgroundView.frame.size.width;
         self.view.frame = frame;
@@ -1261,7 +1267,7 @@ SCLTimerDisplay *buttonTimer;
 
 - (void)slideOutToCenter
 {
-    [UIView animateWithDuration:0.3f animations:^{
+    [UIView animateWithDuration:((NSNumber*)_generalParametersBlock()[kSCLAlertAnimationDurationKey]).floatValue animations:^{
         self.view.transform =
         CGAffineTransformConcat(CGAffineTransformIdentity,
                                 CGAffineTransformMakeScale(0.1f, 0.1f));
@@ -1273,7 +1279,7 @@ SCLTimerDisplay *buttonTimer;
 
 - (void)slideOutFromCenter
 {
-    [UIView animateWithDuration:0.3f animations:^{
+    [UIView animateWithDuration:((NSNumber*)_generalParametersBlock()[kSCLAlertAnimationDurationKey]).floatValue animations:^{
         self.view.transform =
         CGAffineTransformConcat(CGAffineTransformIdentity,
                                 CGAffineTransformMakeScale(3.0f, 3.0f));
@@ -1290,7 +1296,7 @@ SCLTimerDisplay *buttonTimer;
     self.backgroundView.alpha = 0.0f;
     self.view.alpha = 0.0f;
     
-    [UIView animateWithDuration:0.3f
+    [UIView animateWithDuration:((NSNumber*)_generalParametersBlock()[kSCLAlertAnimationDurationKey]).floatValue
                           delay:0.0f
                         options:UIViewAnimationOptionCurveEaseIn
                      animations:^{
@@ -1309,7 +1315,7 @@ SCLTimerDisplay *buttonTimer;
         frame.origin.y = -self.backgroundView.frame.size.height;
         self.view.frame = frame;
         
-        [UIView animateWithDuration:0.3f animations:^{
+        [UIView animateWithDuration:((NSNumber*)_generalParametersBlock()[kSCLAlertAnimationDurationKey]).floatValue animations:^{
             self.backgroundView.alpha = _backgroundOpacity;
             
             //To Frame
@@ -1319,7 +1325,7 @@ SCLTimerDisplay *buttonTimer;
             
             self.view.alpha = 1.0f;
         } completion:^(BOOL completed) {
-            [UIView animateWithDuration:0.2f animations:^{
+            [UIView animateWithDuration:((NSNumber*)_generalParametersBlock()[kSCLAlertAnimationDurationKey]).floatValue animations:^{
                 self.view.center = _backgroundView.center;
             }];
         }];
@@ -1330,7 +1336,7 @@ SCLTimerDisplay *buttonTimer;
         frame.origin.y = -self.backgroundView.frame.size.height;
         self.view.frame = frame;
         
-        [UIView animateWithDuration:0.5f delay:0.0f usingSpringWithDamping:0.6f initialSpringVelocity:0.5f options:0 animations:^{
+        [UIView animateWithDuration:((NSNumber*)_generalParametersBlock()[kSCLAlertAnimationDurationKey]).floatValue delay:0.0f usingSpringWithDamping:0.6f initialSpringVelocity:0.5f options:0 animations:^{
             self.backgroundView.alpha = _backgroundOpacity;
             
             //To Frame
@@ -1352,7 +1358,7 @@ SCLTimerDisplay *buttonTimer;
     frame.origin.y = self.backgroundView.frame.size.height;
     self.view.frame = frame;
     
-    [UIView animateWithDuration:0.3f animations:^{
+    [UIView animateWithDuration:((NSNumber*)_generalParametersBlock()[kSCLAlertAnimationDurationKey]).floatValue animations:^{
         self.backgroundView.alpha = _backgroundOpacity;
         
         //To Frame
@@ -1362,7 +1368,7 @@ SCLTimerDisplay *buttonTimer;
         
         self.view.alpha = 1.0f;
     } completion:^(BOOL completed) {
-        [UIView animateWithDuration:0.2f animations:^{
+        [UIView animateWithDuration:((NSNumber*)_generalParametersBlock()[kSCLAlertAnimationDurationKey]).floatValue animations:^{
             self.view.center = _backgroundView.center;
         }];
     }];
@@ -1375,7 +1381,7 @@ SCLTimerDisplay *buttonTimer;
     frame.origin.x = -self.backgroundView.frame.size.width;
     self.view.frame = frame;
     
-    [UIView animateWithDuration:0.3f animations:^{
+    [UIView animateWithDuration:((NSNumber*)_generalParametersBlock()[kSCLAlertAnimationDurationKey]).floatValue animations:^{
         self.backgroundView.alpha = _backgroundOpacity;
         
         //To Frame
@@ -1385,7 +1391,7 @@ SCLTimerDisplay *buttonTimer;
         
         self.view.alpha = 1.0f;
     } completion:^(BOOL completed) {
-        [UIView animateWithDuration:0.2f animations:^{
+        [UIView animateWithDuration:((NSNumber*)_generalParametersBlock()[kSCLAlertAnimationDurationKey]).floatValue animations:^{
             self.view.center = _backgroundView.center;
         }];
     }];
@@ -1398,7 +1404,7 @@ SCLTimerDisplay *buttonTimer;
     frame.origin.x = self.backgroundView.frame.size.width;
     self.view.frame = frame;
     
-    [UIView animateWithDuration:0.3f animations:^{
+    [UIView animateWithDuration:((NSNumber*)_generalParametersBlock()[kSCLAlertAnimationDurationKey]).floatValue animations:^{
         self.backgroundView.alpha = _backgroundOpacity;
         
         //To Frame
@@ -1408,7 +1414,7 @@ SCLTimerDisplay *buttonTimer;
         
         self.view.alpha = 1.0f;
     } completion:^(BOOL completed) {
-        [UIView animateWithDuration:0.2f animations:^{
+        [UIView animateWithDuration:((NSNumber*)_generalParametersBlock()[kSCLAlertAnimationDurationKey]).floatValue animations:^{
             self.view.center = _backgroundView.center;
         }];
     }];
@@ -1421,7 +1427,7 @@ SCLTimerDisplay *buttonTimer;
                                                   CGAffineTransformMakeScale(3.0f, 3.0f));
     self.view.alpha = 0.0f;
     
-    [UIView animateWithDuration:0.3f animations:^{
+    [UIView animateWithDuration:((NSNumber*)_generalParametersBlock()[kSCLAlertAnimationDurationKey]).floatValue animations:^{
         self.backgroundView.alpha = _backgroundOpacity;
         
         //To Frame
@@ -1429,7 +1435,7 @@ SCLTimerDisplay *buttonTimer;
                                                       CGAffineTransformMakeScale(1.0f, 1.0f));
         self.view.alpha = 1.0f;
     } completion:^(BOOL completed) {
-        [UIView animateWithDuration:0.2f animations:^{
+        [UIView animateWithDuration:((NSNumber*)_generalParametersBlock()[kSCLAlertAnimationDurationKey]).floatValue animations:^{
             self.view.center = _backgroundView.center;
         }];
     }];
@@ -1442,7 +1448,7 @@ SCLTimerDisplay *buttonTimer;
                                                   CGAffineTransformMakeScale(0.1f, 0.1f));
     self.view.alpha = 0.0f;
     
-    [UIView animateWithDuration:0.3f animations:^{
+    [UIView animateWithDuration:((NSNumber*)_generalParametersBlock()[kSCLAlertAnimationDurationKey]).floatValue animations:^{
         self.backgroundView.alpha = _backgroundOpacity;
         
         //To Frame
@@ -1450,7 +1456,7 @@ SCLTimerDisplay *buttonTimer;
                                                       CGAffineTransformMakeScale(1.0f, 1.0f));
         self.view.alpha = 1.0f;
     } completion:^(BOOL completed) {
-        [UIView animateWithDuration:0.2f animations:^{
+        [UIView animateWithDuration:((NSNumber*)_generalParametersBlock()[kSCLAlertAnimationDurationKey]).floatValue animations:^{
             self.view.center = _backgroundView.center;
         }];
     }];
